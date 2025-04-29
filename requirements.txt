@@ -1,0 +1,4 @@
+openai>=1.0.0
+kiteconnect>=3.9.0
+google-cloud-secret-manager>=2.16.2
+requests>=2.31.0
