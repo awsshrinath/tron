@@ -60,3 +60,5 @@
 [2025-04-30 10:09:27] No candle data fetched for NIFTY
 [2025-04-30 10:09:27] Error fetching latest candle: Incorrect `api_key` or `access_token`.
 [2025-04-30 10:09:27] No candle data fetched for BANKNIFTY
+[2025-04-30 12:14:10] GPT Runner+ Started Successfully.
+[2025-04-30 12:18:13] GPT Runner+ Started Successfully.
