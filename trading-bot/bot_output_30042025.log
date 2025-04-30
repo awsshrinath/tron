@@ -1,0 +1,15 @@
+nohup: ignoring input
+
+[INFO] Trading bot started with Nifty trend filter...
+✅ Logged in as: Shrinath Chathoth
+🔍 HDFCBANK: Leverage used: 10x
+
+[SIGNAL] HDFCBANK signal from VWAP Reversal (VWAP Strategy)
+✅ BUY order placed for HDFCBANK, Qty: 15
+
+[ERROR] Bot crashed with error: Too many requests
+
+[CRASH CLEANUP] Closing any open positions...
+✅ SELL order placed for HDFCBANK, Qty: 15
+
+[DONE] Trading bot stopped.

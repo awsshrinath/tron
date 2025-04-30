@@ -1,0 +1,154 @@
+from execution import get_market_data, place_order, log_trade
+from config import STOCKS, DAILY_LOSS_LIMIT, INITIAL_CAPITAL, RISK_PER_TRADE
+from vwap_strategy import vwap_strategy
+from opening_range_strategy import opening_range_strategy
+from nifty_filter import get_nifty_trend
+from datetime import datetime
+import time
+import os
+import csv
+
+capital = INITIAL_CAPITAL
+loss_today = 0
+stop_loss_count = 0
+MAX_STOP_LOSSES = 3
+MAX_TRADES_PER_DAY = 3
+trade_count = 0
+open_positions = {}
+TRAIL_SL_PERCENT = 0.5 / 100
+MARKET_CLOSE_TIME = "15:18"
+ENTRY_LOG = "entry_log.csv"
+
+print("\n[INFO] Trading bot started with Nifty trend filter...")
+
+strategy_functions = [
+    lambda stock: opening_range_strategy(stock, capital),
+    lambda stock: vwap_strategy(stock, capital)
+]
+
+bot_crashed = False
+entry_blocked = False  # 🚨 NEW: Block further entries when max trades hit
+
+try:
+    while True:
+        now = datetime.now().strftime("%H:%M")
+
+        if now >= MARKET_CLOSE_TIME:
+            print("\n[INFO] 3:18 PM reached. Squaring off all open positions...")
+            for stock, pos in list(open_positions.items()):
+                price, _, _ = get_market_data(stock)
+                place_order(stock, "SELL", pos["qty"], price)
+                result = "WIN" if price >= pos["entry"] else "LOSS"
+                pnl = (price - pos["entry"]) * pos["qty"]
+                capital += pnl
+                log_trade(stock, "AUTO-EXIT", pos["entry"], price, result, capital, "Market Close", pos.get("reason", "N/A"))
+            break
+
+        if stop_loss_count >= MAX_STOP_LOSSES:
+            print("\n[STOP] Max SLs hit for the day. Stopping all trades.")
+            break
+
+        if trade_count >= MAX_TRADES_PER_DAY and not entry_blocked:
+            print("\n[STOP] Max trades reached for the day. Blocking further entries, but monitoring exits.")
+            entry_blocked = True
+
+        nifty_trend = get_nifty_trend()
+        if nifty_trend is None:
+            print("[WARN] Skipping trades: Could not determine Nifty trend.")
+            time.sleep(60)
+            continue
+
+        for stock in STOCKS:
+            if stock in open_positions:
+                price, _, _ = get_market_data(stock)
+                pos = open_positions[stock]
+
+                if price >= pos["target"]:
+                    print(f"[TARGET] {stock} hit at ₹{price}")
+                    place_order(stock, "SELL", pos["qty"], price)
+                    pnl = (price - pos["entry"]) * pos["qty"]
+                    capital += pnl
+                    log_trade(stock, "EXIT-TARGET", pos["entry"], price, "WIN", capital, "Target Hit", pos.get("reason", "N/A"))
+                    del open_positions[stock]
+                    continue
+
+                if price <= pos["sl"]:
+                    print(f"[SL] Stop Loss hit for {stock} at ₹{price}")
+                    place_order(stock, "SELL", pos["qty"], price)
+                    pnl = (price - pos["entry"]) * pos["qty"]
+                    capital += pnl
+                    stop_loss_count += 1
+                    loss_today += abs(pnl)
+                    log_trade(stock, "EXIT-SL", pos["entry"], price, "LOSS", capital, "Stop Loss Hit", pos.get("reason", "N/A"))
+                    del open_positions[stock]
+                    continue
+
+                new_trail_sl = price * (1 - TRAIL_SL_PERCENT)
+                if new_trail_sl > pos["sl"]:
+                    print(f"[TRAIL SL] Updated for {stock}: ₹{pos['sl']} → ₹{new_trail_sl:.2f}")
+                    pos["sl"] = new_trail_sl
+                continue
+
+            if now >= "15:00":
+                print(f"[SKIP] {stock}: No new trades allowed after 3:00 PM")
+                continue
+
+            if entry_blocked:
+                continue  # 🚫 Skip entry logic but continue to next stock
+
+            for strategy_func in strategy_functions:
+                signal = strategy_func(stock)
+                if signal:
+                    if signal["action"] == "BUY" and nifty_trend != "UP":
+                        print(f"[FILTER] {stock} skipped: Not aligned with Nifty trend ({nifty_trend})")
+                        continue
+
+                    print(f"\n[SIGNAL] {stock} signal from {signal['reason']}")
+                    order_success = place_order(stock, signal["action"], signal["qty"], signal["entry"])
+                    if not order_success:
+                        print(f"[FAIL] Order failed for {stock}. Skipping...")
+                        continue
+
+                    open_positions[stock] = signal
+                    trade_count += 1
+
+                    file_exists = os.path.isfile(ENTRY_LOG)
+                    with open(ENTRY_LOG, mode='a', newline='') as file:
+                        writer = csv.writer(file)
+                        if not file_exists:
+                            writer.writerow(["DateTime", "Stock", "Action", "Qty", "Entry Price", "SL", "Target", "Strategy"])
+                        writer.writerow([
+                            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                            stock,
+                            signal["action"],
+                            signal["qty"],
+                            round(signal["entry"], 2),
+                            round(signal["sl"], 2),
+                            round(signal["target"], 2),
+                            signal["reason"]
+                        ])
+                    break
+
+        if not open_positions and entry_blocked:
+            print("[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.")
+
+        time.sleep(60)
+
+except Exception as e:
+    bot_crashed = True
+    print(f"\n[ERROR] Bot crashed with error: {e}")
+
+if bot_crashed:
+    print("\n[CRASH CLEANUP] Closing any open positions...")
+    for stock, pos in open_positions.items():
+        try:
+            price, _, _ = get_market_data(stock)
+            place_order(stock, "SELL", pos["qty"], price)
+            result = "WIN" if price >= pos["entry"] else "LOSS"
+            pnl = (price - pos["entry"]) * pos["qty"]
+            capital += pnl
+            log_trade(stock, "FORCED-EXIT", pos["entry"], price, result, capital, "Crash Exit", pos.get("reason", "N/A"))
+        except Exception as err:
+            print(f"[ERROR] Could not close {stock}: {err}")
+
+print("\n[DONE] Trading bot stopped.")

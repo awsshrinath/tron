@@ -1,0 +1,35 @@
+nohup: ignoring input
+
+📈 Option Scalper Paper Bot Started...
+🔍 Checking 115 options for NIFTY expiry 2025-04-30
+❌ No matching ITM Option found for NIFTY
+❌ Skipping NIFTY: No matching ITM Option found
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59400CE: Weak volume
+🔍 Checking 115 options for NIFTY expiry 2025-04-30
+✅ NFO:NIFTY2543024200CE selected for scalp: Entry ₹106.75, Target ₹166.75, SL ₹76.75
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59300CE: Weak volume
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59400CE: Weak volume
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59300CE: Weak volume
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59400CE: Weak volume
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59300CE: Weak volume
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59300CE: Weak volume
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59300CE: Weak volume
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59400CE: Weak volume
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59400CE: Weak volume
+❌ Error fetching LTP for NFO:NIFTY2543024200CE: Too many requests
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+🔇 Skipping NFO:BANKNIFTY25MAY59400CE: Weak volume
+🔍 Checking 188 options for BANKNIFTY expiry 2025-05-29
+✅ NFO:BANKNIFTY25MAY59500CE selected for scalp: Entry ₹105.7, Target ₹165.7, SL ₹75.7
+🛑 Max trades reached for the day.
+✅ Paper Bot Session Ended.

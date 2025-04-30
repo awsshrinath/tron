@@ -1,0 +1,140 @@
+from execution import get_market_data, place_order, log_trade
+from config import STOCKS, DAILY_LOSS_LIMIT, INITIAL_CAPITAL, RISK_PER_TRADE
+from strategy import hybrid_strategy
+from vwap_strategy import vwap_strategy
+from opening_range_strategy import opening_range_strategy
+from nifty_filter import get_nifty_trend
+import time
+from datetime import datetime
+import csv
+import os
+
+capital = INITIAL_CAPITAL
+loss_today = 0
+stop_loss_count = 0
+MAX_STOP_LOSSES = 3
+MAX_TRADES_PER_DAY = 3
+trade_count = 0
+open_positions = {}
+TRAIL_SL_PERCENT = 0.5 / 100
+MARKET_CLOSE_TIME = "15:20"
+ENTRY_LOG = "entry_log.csv"
+
+print("\n📈 Trading bot started with Nifty trend filter...")
+
+strategy_functions = [
+    lambda stock: vwap_strategy(stock, capital),
+    lambda stock: opening_range_strategy(stock, capital),
+    lambda stock: hybrid_strategy(stock, capital)
+]
+
+try:
+    while True:
+        now = datetime.now().strftime("%H:%M")
+
+        if now >= MARKET_CLOSE_TIME:
+            print("\n🔔 3:20 PM reached. Squaring off all open positions...")
+            for stock, pos in list(open_positions.items()):
+                price, _, _ = get_market_data(stock)
+                place_order(stock, "SELL", pos["qty"], price)
+                result = "WIN" if price >= pos["entry"] else "LOSS"
+                pnl = (price - pos["entry"]) * pos["qty"]
+                capital += pnl
+                log_trade(stock, "AUTO-EXIT", pos["entry"], price, result, capital, "Market Close", pos.get("reason", "N/A"))
+            break
+
+        if stop_loss_count >= MAX_STOP_LOSSES:
+            print("\n🛑 Max SLs hit for the day. Stopping all trades.")
+            time.sleep(60)
+            continue
+
+        if trade_count >= MAX_TRADES_PER_DAY:
+            print("\n🛑 Max trades reached for the day. Stopping further entries.")
+            time.sleep(60)
+            continue
+
+        nifty_trend = get_nifty_trend()
+        if nifty_trend is None:
+            print("⚠️ Skipping trades: Could not determine Nifty trend.")
+            time.sleep(60)
+            continue
+
+        for stock in STOCKS:
+            if stock in open_positions:
+                price, _, _ = get_market_data(stock)
+                pos = open_positions[stock]
+
+                if price >= pos["target"]:
+                    print(f"🎯 Target hit for {stock} at ₹{price}")
+                    place_order(stock, "SELL", pos["qty"], price)
+                    pnl = (price - pos["entry"]) * pos["qty"]
+                    capital += pnl
+                    log_trade(stock, "EXIT-TARGET", pos["entry"], price, "WIN", capital, "Target Hit", pos.get("reason", "N/A"))
+                    del open_positions[stock]
+                    continue
+
+                if price <= pos["sl"]:
+                    print(f"🛑 SL hit for {stock} at ₹{price}")
+                    place_order(stock, "SELL", pos["qty"], price)
+                    pnl = (price - pos["entry"]) * pos["qty"]
+                    capital += pnl
+                    stop_loss_count += 1
+                    loss_today += abs(pnl)
+                    log_trade(stock, "EXIT-SL", pos["entry"], price, "LOSS", capital, "Stop Loss Hit", pos.get("reason", "N/A"))
+                    del open_positions[stock]
+                    continue
+
+                new_trail_sl = price * (1 - TRAIL_SL_PERCENT)
+                if new_trail_sl > pos["sl"]:
+                    print(f"📈 Trailing SL moved for {stock}: ₹{pos['sl']} → ₹{new_trail_sl:.2f}")
+                    pos["sl"] = new_trail_sl
+                continue
+
+            for strategy_func in strategy_functions:
+                signal = strategy_func(stock)
+                if signal:
+                    if signal["action"] == "BUY" and nifty_trend != "UP":
+                        print(f"⚠️ {stock} signal skipped: Not aligned with Nifty trend ({nifty_trend})")
+                        continue
+
+                    print(f"\n📌 {stock} signal from {signal['reason']}")
+                    if place_order(stock, signal["action"], signal["qty"], signal["entry"]):
+                        open_positions[stock] = signal
+                        trade_count += 1
+
+                        file_exists = os.path.isfile(ENTRY_LOG)
+                        with open(ENTRY_LOG, mode='a', newline='') as file:
+                            writer = csv.writer(file)
+                            if not file_exists:
+                                writer.writerow(["DateTime", "Stock", "Action", "Qty", "Entry Price", "SL", "Target", "Strategy"])
+                            writer.writerow([
+                                datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                stock,
+                                signal["action"],
+                                signal["qty"],
+                                round(signal["entry"], 2),
+                                round(signal["sl"], 2),
+                                round(signal["target"], 2),
+                                signal["reason"]
+                            ])
+                    break
+
+        time.sleep(60)
+
+except Exception as e:
+    print(f"\n❌ Bot crashed with error: {e}")
+
+finally:
+    print("\n⚠️ Final cleanup: Closing any open positions...")
+    for stock, pos in open_positions.items():
+        try:
+            price, _, _ = get_market_data(stock)
+            place_order(stock, "SELL", pos["qty"], price)
+            result = "WIN" if price >= pos["entry"] else "LOSS"
+            pnl = (price - pos["entry"]) * pos["qty"]
+            capital += pnl
+            log_trade(stock, "FORCED-EXIT", pos["entry"], price, result, capital, "Crash Exit", pos.get("reason", "N/A"))
+        except Exception as e:
+            print(f"❌ Could not close {stock}: {e}")
+
+print("\n✅ Trading bot stopped.")

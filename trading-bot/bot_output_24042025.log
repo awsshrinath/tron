@@ -1,0 +1,41 @@
+nohup: ignoring input
+
+📈 Trading bot started with Nifty trend filter...
+✅ Logged in as: Shrinath Chathoth
+🔍 HDFCBANK: Leverage used: 10x
+⚠️ HDFCBANK signal skipped: Not aligned with Nifty trend (DOWN)
+🔍 HDFCBANK: Leverage used: 10x
+⚠️ HDFCBANK signal skipped: Not aligned with Nifty trend (DOWN)
+🔍 HDFCBANK: Leverage used: 10x
+⚠️ HDFCBANK signal skipped: Not aligned with Nifty trend (DOWN)
+🔍 HDFCBANK: Leverage used: 10x
+⚠️ HDFCBANK signal skipped: Not aligned with Nifty trend (DOWN)
+🔍 HDFCBANK: Leverage used: 10x
+⚠️ HDFCBANK signal skipped: Not aligned with Nifty trend (DOWN)
+🔍 HDFCBANK: Leverage used: 10x
+⚠️ HDFCBANK signal skipped: Not aligned with Nifty trend (DOWN)
+🔍 HDFCBANK: Leverage used: 10x
+⚠️ HDFCBANK signal skipped: Not aligned with Nifty trend (DOWN)
+🔍 HDFCBANK: Leverage used: 10x
+⚠️ HDFCBANK signal skipped: Not aligned with Nifty trend (DOWN)
+🔍 RELIANCE: Leverage used: 5x
+
+📌 RELIANCE signal from VWAP Reversal (VWAP Strategy)
+✅ BUY order placed for RELIANCE, Qty: 11
+🔍 TCS: Leverage used: 10x
+
+📌 TCS signal from VWAP Reversal (VWAP Strategy)
+✅ BUY order placed for TCS, Qty: 8
+🔍 HDFCBANK: Leverage used: 10x
+
+📌 HDFCBANK signal from Opening Range Breakout (ORB Strategy)
+✅ BUY order placed for HDFCBANK, Qty: 14
+
+🛑 Max trades reached for the day. Stopping further entries.
+
+⚠️ Final cleanup: Closing any open positions...
+✅ SELL order placed for RELIANCE, Qty: 11
+✅ SELL order placed for TCS, Qty: 8
+✅ SELL order placed for HDFCBANK, Qty: 14
+
+✅ Trading bot stopped.

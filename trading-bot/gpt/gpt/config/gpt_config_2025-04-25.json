@@ -1,0 +1,4 @@
+{
+    "error": "Failed to parse GPT config response",
+    "raw": "As no specific trading errors or trades were provided, here's a general suggestion for a JSON configuration:\n\n```json\n{\n    \"max_trades\": 100,\n    \"use_vwap\": true,\n    \"vwap_start_time\": \"09:30\",\n    \"atr_multiplier\": 1.5,\n    \"entry_filter_strictness\": \"medium\"\n}\n```\nThis is a generalized configuration. Adjust the parameters as per your trading strategy and market conditions."
+}

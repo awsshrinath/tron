@@ -1,0 +1,193 @@
+nohup: ignoring input
+
+[INFO] Trading bot started with Nifty trend filter...
+✅ Logged in as: Shrinath Chathoth
+🔍 HDFCBANK: Leverage used: 10x
+[FILTER] HDFCBANK skipped: Not aligned with Nifty trend (DOWN)
+🔍 ICICIBANK: Leverage used: 10x
+[FILTER] ICICIBANK skipped: Not aligned with Nifty trend (DOWN)
+🔍 HDFCBANK: Leverage used: 10x
+[FILTER] HDFCBANK skipped: Not aligned with Nifty trend (DOWN)
+🔍 ICICIBANK: Leverage used: 10x
+[FILTER] ICICIBANK skipped: Not aligned with Nifty trend (DOWN)
+🔍 HDFCBANK: Leverage used: 10x
+
+[SIGNAL] HDFCBANK signal from VWAP Reversal (VWAP Strategy)
+✅ BUY order placed for HDFCBANK, Qty: 15
+🔍 ICICIBANK: Leverage used: 10x
+
+[SIGNAL] ICICIBANK signal from VWAP Reversal (VWAP Strategy)
+✅ BUY order placed for ICICIBANK, Qty: 20
+[TRAIL SL] Updated for ICICIBANK: ₹1415.0 → ₹1417.08
+[TRAIL SL] Updated for ICICIBANK: ₹1417.079 → ₹1418.07
+[TRAIL SL] Updated for ICICIBANK: ₹1418.074 → ₹1418.97
+[TRAIL SL] Updated for ICICIBANK: ₹1418.9695 → ₹1419.17
+[TRAIL SL] Updated for HDFCBANK: ₹1916.7 → ₹1917.37
+[TRAIL SL] Updated for ICICIBANK: ₹1419.1685 → ₹1421.36
+🔍 RELIANCE: Leverage used: 5x
+
+[SIGNAL] RELIANCE signal from VWAP Reversal (VWAP Strategy)
+✅ BUY order placed for RELIANCE, Qty: 11
+
+[STOP] Max trades reached for the day. Blocking further entries, but monitoring exits.
+[TRAIL SL] Updated for RELIANCE: ₹1331.5 → ₹1332.31
+[TRAIL SL] Updated for HDFCBANK: ₹1917.365 → ₹1918.26
+[TRAIL SL] Updated for HDFCBANK: ₹1918.2605 → ₹1918.56
+[TRAIL SL] Updated for RELIANCE: ₹1332.305 → ₹1332.40
+[TRAIL SL] Updated for RELIANCE: ₹1332.4044999999999 → ₹1332.50
+[TRAIL SL] Updated for ICICIBANK: ₹1421.3575 → ₹1421.66
+[TRAIL SL] Updated for RELIANCE: ₹1332.5040000000001 → ₹1334.99
+[TRAIL SL] Updated for ICICIBANK: ₹1421.656 → ₹1422.45
+[TRAIL SL] Updated for RELIANCE: ₹1334.9915 → ₹1337.28
+[TRAIL SL] Updated for RELIANCE: ₹1337.28 → ₹1337.98
+[TRAIL SL] Updated for ICICIBANK: ₹1422.452 → ₹1423.35
+[TRAIL SL] Updated for RELIANCE: ₹1337.9765 → ₹1339.67
+[TRAIL SL] Updated for RELIANCE: ₹1339.6680000000001 → ₹1339.87
+[TRAIL SL] Updated for RELIANCE: ₹1339.867 → ₹1342.16
+[TARGET] RELIANCE hit at ₹1349.7
+✅ SELL order placed for RELIANCE, Qty: 11
+[TRAIL SL] Updated for ICICIBANK: ₹1423.3475 → ₹1423.85
+[TRAIL SL] Updated for ICICIBANK: ₹1423.845 → ₹1424.14
+[TRAIL SL] Updated for ICICIBANK: ₹1424.1435 → ₹1424.54
+[TRAIL SL] Updated for ICICIBANK: ₹1424.5415 → ₹1424.94
+[TRAIL SL] Updated for HDFCBANK: ₹1918.559 → ₹1919.06
+[SL] Stop Loss hit for ICICIBANK at ₹1424.7
+✅ SELL order placed for ICICIBANK, Qty: 20
+❌ Failed to get Nifty trend: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+[WARN] Skipping trades: Could not determine Nifty trend.
+[SL] Stop Loss hit for HDFCBANK at ₹1918.3
+✅ SELL order placed for HDFCBANK, Qty: 15
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+[SKIP] RELIANCE: No new trades allowed after 3:00 PM
+[SKIP] TCS: No new trades allowed after 3:00 PM
+[SKIP] HDFCBANK: No new trades allowed after 3:00 PM
+[SKIP] INFY: No new trades allowed after 3:00 PM
+[SKIP] ICICIBANK: No new trades allowed after 3:00 PM
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+
+[INFO] 3:18 PM reached. Squaring off all open positions...
+
+[DONE] Trading bot stopped.

@@ -1,0 +1,1 @@
+InsufficientMarginException: Required ₹9000, Available ₹7000

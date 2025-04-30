@@ -1,0 +1,30 @@
+nohup: ignoring input
+
+[INFO] Trading bot started with Nifty trend filter...
+✅ Logged in as: Shrinath Chathoth
+🔍 RELIANCE: Leverage used: 5x
+
+[SIGNAL] RELIANCE signal from VWAP Reversal (VWAP Strategy)
+✅ BUY order placed for RELIANCE, Qty: 10
+🔍 ICICIBANK: Leverage used: 10x
+
+[SIGNAL] ICICIBANK signal from VWAP Reversal (VWAP Strategy)
+✅ BUY order placed for ICICIBANK, Qty: 20
+🔍 HDFCBANK: Leverage used: 10x
+
+[SIGNAL] HDFCBANK signal from VWAP Reversal (VWAP Strategy)
+✅ BUY order placed for HDFCBANK, Qty: 15
+
+[STOP] Max trades reached for the day. Blocking further entries, but monitoring exits.
+[TRAIL SL] Updated for RELIANCE: ₹1381.4 → ₹1383.35
+[SL] Stop Loss hit for RELIANCE at ₹1383.1
+✅ SELL order placed for RELIANCE, Qty: 10
+[SL] Stop Loss hit for HDFCBANK at ₹1918.5
+✅ SELL order placed for HDFCBANK, Qty: 15
+[SL] Stop Loss hit for ICICIBANK at ₹1429.5
+✅ SELL order placed for ICICIBANK, Qty: 20
+[INFO] All trades placed. No open positions. Awaiting market close or SL/target hits.
+
+[STOP] Max SLs hit for the day. Stopping all trades.
+
+[DONE] Trading bot stopped.
