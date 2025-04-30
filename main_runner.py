@@ -66,6 +66,9 @@ def main():
     logger.log_event("Starting Live Trading Session...")
     trade_manager.start_trading(selected_strategy, market_data_fetcher)
 
+    monitor = GPTSelfImprovementMonitor(logger, firestore_client, openai_manager)
+    monitor.analyze(bot_name=selected_strategy)
+
 
 if __name__ == "__main__":
     main()
