@@ -1,33 +1,29 @@
-# runner/secret_manager_client.py
-
 import os
 from google.cloud import secretmanager
+from google.auth import default
 from google.oauth2 import service_account
 
 def create_secret_manager_client():
     """
     Creates a Secret Manager Client.
-    If running locally, loads Service Account credentials manually.
-    If running inside GCP VM, uses default credentials.
+    If running inside GCP, uses default credentials.
+    If running locally, loads Service Account credentials from a file.
     """
-    # Detect if inside GCP environment
-    if os.getenv('GOOGLE_CLOUD_PROJECT'):
-        # Inside GCP (VM, Cloud Run, etc.)
-        client = secretmanager.SecretManagerServiceClient()
-        return client
-    else:
-        # Local machine (Windows/Mac/Linux)
-        credentials = service_account.Credentials.from_service_account_file(
-            r"D:\autotrade-453303-3c843b9f1ca3.json"   # <-- Update this path if needed
-        )
-        client = secretmanager.SecretManagerServiceClient(credentials=credentials)
-        return client
+    try:
+        # Try using default credentials (GCP VM, Cloud Run, etc.)
+        credentials, project = default()
+        return secretmanager.SecretManagerServiceClient(credentials=credentials)
+    except Exception:
+        # Fallback to local development
+        key_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "./keys/autotrade.json")
+        credentials = service_account.Credentials.from_service_account_file(key_path)
+        return secretmanager.SecretManagerServiceClient(credentials=credentials)
 
 def access_secret(secret_id, project_id):
     """
-    Accesses the latest version of the specified secret.
+    Accesses the latest version of the specified secret from Secret Manager.
     """
     client = create_secret_manager_client()
-    name = f"projects/autotrade-453303/secrets/{secret_id}/versions/latest"
+    name = f"projects/{project_id}/secrets/{secret_id}/versions/latest"
     response = client.access_secret_version(name=name)
-    return response.payload.data.decode('UTF-8')
+    return response.payload.data.decode("UTF-8")
