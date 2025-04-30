@@ -1,10 +1,12 @@
 from runner.strategy_factory import load_strategy
 import time
+from datetime import datetime
 
 class TradeManager:
-    def __init__(self, kite, logger):
+    def __init__(self, kite, logger, firestore_client):
         self.kite = kite
         self.logger = logger
+        self.firestore = firestore_client
         self.active_trades = []
         self.strategy = None
 
@@ -24,31 +26,34 @@ class TradeManager:
             self.active_trades.append(trade)
             self.logger.log_event(f"Trade executed (simulated): {trade}")
 
-    def start_trading(self, selected_strategy, market_data_fetcher):
-        self.logger.log_event(f"Live Trading Started using Strategy: {selected_strategy}")
+def start_trading(self, selected_strategy, market_data_fetcher):
+    self.logger.log_event(f"Live Trading Started using Strategy: {selected_strategy}")
 
-        # Example instrument tokens (you can customize this later)
-        # (Later: Read dynamically from strategy or config)
-        watchlist = {
-            "NIFTY": 256265,       # Nifty Index
-            "BANKNIFTY": 260105    # Bank Nifty Index
-        }
+    watchlist = {
+        "NIFTY": 256265,
+        "BANKNIFTY": 260105
+    }
 
-        while True:
-            for symbol, token in watchlist.items():
-                candle = market_data_fetcher.fetch_latest_candle(token, interval="5minute")
+    while True:
+        for symbol, token in watchlist.items():
+            candle = market_data_fetcher.fetch_latest_candle(token, interval="5minute")
 
-                if candle:
-                    market_data = {
+            if candle:
+                market_data = {
                     symbol: candle
-                    }
-                    # Now pass real market data to strategy
-                    new_trades = self.strategy.find_trade_opportunities(market_data)
+                }
 
-                    for trade in new_trades:
-                        self.active_trades.append(trade)
-                        self.logger.log_event(f"Trade executed (simulated): {trade}")
-                else:
-                    self.logger.log_event(f"No candle data fetched for {symbol}")
+                # Pass market data to strategy
+                new_trades = self.strategy.find_trade_opportunities(market_data)
 
-            time.sleep(60)  # Wait 60 seconds before next fetch
+                for trade in new_trades:
+                    self.active_trades.append(trade)
+                    self.logger.log_event(f"Trade executed (simulated): {trade}")
+
+                    # ✅ Log to Firestore
+                    today = datetime.now().strftime("%Y-%m-%d")
+                    self.firestore.log_trade(selected_strategy, today, trade)
+            else:
+                self.logger.log_event(f"No candle data fetched for {symbol}")
+
+        time.sleep(60)  # Wait 60 seconds before next fetch

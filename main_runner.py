@@ -15,6 +15,7 @@ from runner.utils import create_daily_folders
 from runner.openai_manager import OpenAIManager
 from runner.kiteconnect_manager import KiteConnectManager
 from runner.market_data_fetcher import MarketDataFetcher
+from runner.firestore_client import FirestoreClient
 
 
 
@@ -24,6 +25,8 @@ def main():
     create_daily_folders(today_date)
 
     logger.log_event("GPT Runner+ Started Successfully.")
+
+    firestore_client = FirestoreClient(logger)
     
     # Initialize Secret Manager / OpenAIManager if needed
     
