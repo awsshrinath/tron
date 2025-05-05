@@ -1,0 +1,23 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: futures-trader
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: futures-trader
+  template:
+    metadata:
+      labels:
+        app: futures-trader
+    spec:
+      containers:
+      - name: futures-trader
+        image: asia-south1-docker.pkg.dev/autotrade-453303/gpt-repo/gpt-runner:latest
+        command: ["python"]
+        args: ["futures_trading/futures_runner.py"]
+        env:
+        - name: PAPER_MODE
+          value: "true"

@@ -14,7 +14,7 @@ class Logger:
 
     def log_event(self, event_text):
         timestamp = datetime.datetime.now().strftime("[%Y-%m-%d %H:%M:%S]")
-        with open(self.log_file_path, "a") as f:
+        with open(self.log_file_path, "a", encoding="utf-8") as f:
             f.write(f"{timestamp} {event_text}\n")
 
         print(f"{timestamp} {event_text}")  # Also print to console for real-time monitoring

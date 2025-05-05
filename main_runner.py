@@ -43,7 +43,7 @@ def main():
     strategy_selector = StrategySelector(logger)
 
     # Initialize TradeManager
-    trade_manager = TradeManager(kite, logger)
+    trade_manager = TradeManager(kite, logger, firestore_client)
 
     # Pre-Market Monitoring
     market_monitor = MarketMonitor(logger)

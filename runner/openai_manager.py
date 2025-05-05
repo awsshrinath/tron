@@ -31,3 +31,34 @@ class OpenAIManager:
         except Exception as e:
             self.logger.log_event(f"OpenAI API call failed: {str(e)}")
             return None
+
+def ask_gpt(input_data):
+    try:
+        prompt = f"""
+        You are a trading strategy selector bot.
+
+        Based on the following sentiment:
+        {input_data}
+
+        Respond with a strategy name (e.g., 'vwap_strategy', 'orb_strategy') and a direction (bullish, bearish, neutral)
+        for the bot type: {input_data["bot"]}.
+
+        Reply strictly in the following JSON format:
+        {{
+            "strategy": "<name>",
+            "direction": "<bullish|bearish|neutral>"
+        }}
+        """
+
+        gpt = OpenAIManager(logger=log_event)
+        response_text = gpt.get_suggestion(prompt)
+
+        import json
+        return json.loads(response_text)
+
+    except Exception as e:
+        log_event(f"[GPT ERROR] Failed to parse GPT response: {e}")
+        return {
+            "strategy": "vwap_strategy",
+            "direction": "neutral"
+        }
