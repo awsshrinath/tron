@@ -1,37 +1,55 @@
-from datetime import datetime
+import datetime
+import os
+from runner.firestore_client import FirestoreClient
+from runner.logger import Logger
+from runner.openai_manager import ask_gpt
+from runner.secret_manager_client import access_secret
 
-class GPTSelfImprovementMonitor:
-    def __init__(self, logger, firestore_client, openai_manager):
-        self.logger = logger
-        self.firestore = firestore_client
-        self.openai = openai_manager
+logger = Logger("logs/gpt_reflection.log")
+firestore_client = FirestoreClient(logger=logger)
 
-    def analyze(self, bot_name):
-        today = datetime.now().strftime("%Y-%m-%d")
+def summarize_trades(trades):
+    if not trades:
+        return "No trades were taken today."
 
-        # 1. Fetch today's trades from Firestore
-        trades = self.firestore.fetch_trades(bot_name, today)
-        if not trades:
-            self.logger.log_event(f"No trades found for {bot_name} on {today}, skipping GPT reflection.")
-            return
+    lines = []
+    for trade in trades:
+        status = trade.get("status", "open").upper()
+        lines.append(
+            f"{trade['symbol']} | {trade['strategy']} | Entry: {trade['entry_price']} | "
+            f"Exit: {trade.get('exit_price', '-')}, Status: {status}"
+        )
+    return "\n".join(lines)
 
-        # 2. Build prompt for GPT
-        prompt = f"""You are an expert trading assistant.
-Today’s trades for bot '{bot_name}' on {today} are:\n
-{trades}
 
-Please analyze:
-- Were entries optimal?
-- Did we exit too early or late?
-- Any risk or momentum issues?
-- Suggestions for tomorrow’s improvement.
+def run_gpt_reflection(bot_name):
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    trades = firestore_client.fetch_trades(bot_name, today)
+
+    trade_summary = summarize_trades(trades)
+    prompt = f"""
+You're a trading analyst AI. Review today's trades and suggest improvements.
+
+### TRADE SUMMARY:
+{trade_summary}
+
+### TASK:
+- Identify patterns in SL/Target hits.
+- Suggest strategy improvements.
+- Detect overtrading or missed opportunities.
+- Suggest SL/target updates or filters.
+- Format output cleanly as markdown.
 """
+    print("\n[GPT] Reflecting on trades...")
+    reflection = ask_gpt(prompt)
 
-        # 3. Send to OpenAI
-        reflection = self.openai.get_suggestion(prompt)
+    # Save to Firestore
+    firestore_client.log_reflection(bot_name, today, reflection)
 
-        # 4. Save reflection to Firestore
-        self.firestore.log_reflection(bot_name, today, reflection)
+    # Also log locally
+    with open("logs/gpt_reflection.jsonl", "a") as f:
+        f.write(
+            f'{{"timestamp": "{datetime.datetime.now().isoformat()}", "bot": "{bot_name}", "summary": "{reflection}"}}\n'
+        )
+    print("[GPT] Reflection complete. Summary saved.")
 
-        # 5. Log event
-        self.logger.log_event(f"GPT Reflection Logged for {bot_name}: {reflection}")
