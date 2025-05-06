@@ -9,7 +9,7 @@ kite.set_access_token(os.getenv("ZERODHA_ACCESS_TOKEN"))
 # Cache for instrument tokens
 token_cache = {}
 
-def get_instrument_token(symbol):
+def get_instrument_tokens(symbol):
     """Fetch instrument token for a futures symbol like NIFTY24APRFUT."""
     if symbol in token_cache:
         return token_cache[symbol]
@@ -27,7 +27,7 @@ def get_instrument_token(symbol):
 def is_volume_strong(symbol):
     """Check if current volume is higher than average of last 5 candles."""
     try:
-        token = get_instrument_token(symbol)
+        token = get_instrument_tokens(symbol)
         if not token:
             return False
 

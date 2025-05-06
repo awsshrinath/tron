@@ -3,7 +3,7 @@ from kiteconnect import KiteConnect
 from runner.config import PAPER_TRADE
 
 def orb_strategy(symbol, kite: KiteConnect, capital):
-    instrument_token = get_instrument_token(symbol)
+    instrument_token = get_instrument_tokens(symbol)
     now = datetime.now()
     today_9_15 = now.replace(hour=9, minute=15, second=0, microsecond=0)
     today_9_30 = now.replace(hour=9, minute=30, second=0, microsecond=0)
@@ -73,7 +73,7 @@ def calculate_quantity(capital, price):
     risk_amount = capital * risk_percent
     return int(risk_amount / price)
 
-def get_instrument_token(symbol):
+def get_instrument_tokens(symbol):
     instrument_map = {
         "RELIANCE": 738561,
         "ICICIBANK": 1270529,

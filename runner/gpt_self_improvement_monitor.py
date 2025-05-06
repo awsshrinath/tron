@@ -1,55 +1,40 @@
-import datetime
-import os
+# runner/gpt_self_improvement_monitor.py
+
+from datetime import datetime
 from runner.firestore_client import FirestoreClient
-from runner.logger import Logger
-from runner.openai_manager import ask_gpt
-from runner.secret_manager_client import access_secret
 
-logger = Logger("logs/gpt_reflection.log")
-firestore_client = FirestoreClient(logger=logger)
+class GPTSelfImprovementMonitor:
+    def __init__(self, logger, firestore_client: FirestoreClient, gpt_client):
+        self.logger = logger
+        self.firestore_client = firestore_client
+        self.gpt = gpt_client
 
-def summarize_trades(trades):
-    if not trades:
-        return "No trades were taken today."
+    def analyze(self, bot_name="stock-trader"):
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        trades = self.firestore_client.fetch_trades(bot_name, date_str)
 
-    lines = []
-    for trade in trades:
-        status = trade.get("status", "open").upper()
-        lines.append(
-            f"{trade['symbol']} | {trade['strategy']} | Entry: {trade['entry_price']} | "
-            f"Exit: {trade.get('exit_price', '-')}, Status: {status}"
+        if not trades:
+            self.logger.log_event(f"[GPT Reflection] No trades found for {bot_name} on {date_str}")
+            return
+
+        summary_prompt = self._build_prompt(trades)
+        reflection = self.gpt.ask(summary_prompt)
+
+        if reflection:
+            self.firestore_client.log_reflection(bot_name, date_str, reflection)
+            self.logger.log_event("[GPT Reflection] Reflection complete and stored.")
+        else:
+            self.logger.log_event("[GPT Reflection] No reflection generated.")
+
+    def _build_prompt(self, trades):
+        summary_lines = []
+        for trade in trades:
+            line = f"{trade['timestamp']}: {trade['symbol']} | Entry: {trade['entry_price']} | Exit: {trade.get('exit_price', 'NA')} | Status: {trade['status']}"
+            summary_lines.append(line)
+
+        summary = "\n".join(summary_lines)
+        return (
+            "Analyze the following trades for performance and suggest improvements:\n\n"
+            f"{summary}\n\n"
+            "Provide insights like entry timing, stop loss accuracy, and missed targets."
         )
-    return "\n".join(lines)
-
-
-def run_gpt_reflection(bot_name):
-    today = datetime.datetime.now().strftime("%Y-%m-%d")
-    trades = firestore_client.fetch_trades(bot_name, today)
-
-    trade_summary = summarize_trades(trades)
-    prompt = f"""
-You're a trading analyst AI. Review today's trades and suggest improvements.
-
-### TRADE SUMMARY:
-{trade_summary}
-
-### TASK:
-- Identify patterns in SL/Target hits.
-- Suggest strategy improvements.
-- Detect overtrading or missed opportunities.
-- Suggest SL/target updates or filters.
-- Format output cleanly as markdown.
-"""
-    print("\n[GPT] Reflecting on trades...")
-    reflection = ask_gpt(prompt)
-
-    # Save to Firestore
-    firestore_client.log_reflection(bot_name, today, reflection)
-
-    # Also log locally
-    with open("logs/gpt_reflection.jsonl", "a") as f:
-        f.write(
-            f'{{"timestamp": "{datetime.datetime.now().isoformat()}", "bot": "{bot_name}", "summary": "{reflection}"}}\n'
-        )
-    print("[GPT] Reflection complete. Summary saved.")
-

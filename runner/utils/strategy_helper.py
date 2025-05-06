@@ -15,7 +15,7 @@ def calculate_quantity(capital, price):
     risk_amount = capital * risk_percent
     return int(risk_amount / price)
 
-def get_instrument_token(symbol):
+def get_instrument_tokens(symbol):
     instrument_map = {
         "RELIANCE": 738561,
         "ICICIBANK": 1270529,

@@ -7,7 +7,7 @@ kite.set_access_token(ACCESS_TOKEN)
 
 ATR_CACHE = {}
 
-def get_instrument_token(stock):
+def get_instrument_tokens(stock):
     instrument_map = {
         "RELIANCE": 738561,
         "HDFCBANK": 341249,
@@ -26,7 +26,7 @@ def get_atr(stock, period=14, interval="15minute"):
 
     try:
         candles = kite.historical_data(
-            instrument_token=get_instrument_token(stock),
+            instrument_token=get_instrument_tokens(stock),
             from_date=from_date,
             to_date=to_date,
             interval=interval
