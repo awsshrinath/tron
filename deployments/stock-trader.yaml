@@ -1,4 +1,4 @@
-
+# stock-trader.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,8 +16,14 @@ spec:
       containers:
       - name: stock-trader
         image: asia-south1-docker.pkg.dev/autotrade-453303/gpt-repo/gpt-runner:latest
-        command: ["python"]
-        args: ["stock_trading/stock_runner.py"]
+        command: ["python", "stock_trading/stock_runner.py"]
         env:
         - name: PAPER_MODE
           value: "true"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
