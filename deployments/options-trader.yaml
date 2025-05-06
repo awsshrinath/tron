@@ -1,4 +1,4 @@
-
+# options-trader.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,8 +16,14 @@ spec:
       containers:
       - name: options-trader
         image: asia-south1-docker.pkg.dev/autotrade-453303/gpt-repo/gpt-runner:latest
-        command: ["python"]
-        args: ["options_trading/options_runner.py"]
+        command: ["python","options_trading/options_runner.py"]
         env:
         - name: PAPER_MODE
           value: "true"
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
