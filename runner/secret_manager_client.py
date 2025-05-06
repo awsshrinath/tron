@@ -2,6 +2,7 @@ import os
 from google.cloud import secretmanager
 from google.auth import default
 from google.oauth2 import service_account
+from kiteconnect import KiteConnect
 
 def create_secret_manager_client():
     """
@@ -24,6 +25,14 @@ def access_secret(secret_id, project_id):
     Accesses the latest version of the specified secret from Secret Manager.
     """
     client = create_secret_manager_client()
-    name = f"projects/{project_id}/secrets/{secret_id}/versions/latest"
+    name = f"projects/autotrade-453303/secrets/{secret_id}/versions/latest"
     response = client.access_secret_version(name=name)
     return response.payload.data.decode("UTF-8")
+
+def get_kite_client():
+    api_key = access_secret("ZERODHA_API_KEY")
+    access_token = access_secret("ZERODHA_ACCESS_TOKEN")
+
+    kite = KiteConnect(api_key=api_key)
+    kite.set_access_token(access_token)
+    return kite

@@ -4,6 +4,28 @@ import os
 from datetime import datetime
 sys.path.insert(0, ".")
 
+from runner import config
+print(f"✅ config.py loaded: PAPER_TRADE={config.PAPER_TRADE}")
+
+from strategies.vwap_strategy import vwap_strategy
+
+fake_candles = [
+    {"high": 101, "low": 99, "close": 100, "volume": 10000}
+] * 15  # Dummy 15 candles
+
+trade = vwap_strategy(symbol="NIFTY", candles=fake_candles, capital=10000)
+print("✅ vwap_strategy output:", trade)
+
+from options_trading.utils.strike_picker import pick_strike
+pick_strike(symbol="NIFTY", direction="bullish")
+
+from runner.risk_governor import RiskGovernor
+rg = RiskGovernor(max_daily_loss=600, max_trades=3)
+print("✅ risk_governor.can_trade() →", rg.can_trade())
+
+from runner.gpt_self_improvement_monitor import run_gpt_reflection
+run_gpt_reflection(bot_name="options-trader")
+
 def test_config():
     from runner import config
     print(f"\u2705 config.py loaded: PAPER_TRADE={config.PAPER_TRADE}")

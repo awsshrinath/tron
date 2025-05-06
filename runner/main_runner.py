@@ -1,9 +1,10 @@
 import time
 import subprocess
 from runner.market_monitor import MarketMonitor
-from runner.strategy_selector import choose_strategy
-from runner.firestore_client import store_daily_plan
-from runner.secret_manager_client import get_secret
+from runner.strategy_selector import StrategySelector
+#from runner.firestore_client import store_daily_plan
+from runner.firestore_client import FirestoreClient
+from runner.secret_manager_client import access_secret
 import os
 
 # Load trading mode (PAPER or LIVE)
@@ -40,10 +41,10 @@ def main():
 
     print(f"📊 Market Sentiment: {sentiment}")
 
-    plan = choose_strategy(sentiment)
+    plan = StrategySelector.choose_strategy(sentiment)
     plan["mode"] = "paper" if PAPER_TRADE else "live"
 
-    store_daily_plan(plan)
+    FirestoreClient.store_daily_plan(plan)
     print(f"✅ Strategy Plan Saved: {plan}")
 
     # Launch bots

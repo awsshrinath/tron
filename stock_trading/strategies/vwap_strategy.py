@@ -1,5 +1,5 @@
 from runner.utils.strategy_helpers import calculate_atr, calculate_quantity
-from runner.utils.instrument_utils import get_instrument_token
+from runner.utils.instrument_utils import get_instrument_tokens
 
 
 def vwap_strategy(symbol, candles, capital):
